@@ -12,6 +12,8 @@ COPY ./backend /var/www
 
 RUN composer install --no-interaction --prefer-dist
 
+RUN cp .env.example .env
+
 RUN php artisan key:generate
 
 RUN chown -R www-data:www-data /var/www \
