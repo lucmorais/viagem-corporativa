@@ -1,0 +1,40 @@
+# BACKEND - LARAVEL
+/backend/vendor/
+/backend/node_modules/
+backend/.env
+backend/.phpunit.result.cache
+backend/storage/*.key
+backend/storage/framework/*
+backend/storage/logs/*
+backend/public/storage
+
+# IDEs e arquivos locais
+/backend/.idea/
+/backend/.vscode/
+
+# Laravel sail/docker extras
+/backend/docker-compose.override.yml
+/backend/homestead.yaml
+/backend/Homestead.json
+
+# FRONTEND - VUE + VITE
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.vitepress/dist
+/frontend/.env
+/frontend/.env.local
+/frontend/.DS_Store
+
+# IDEs e arquivos locais
+/frontend/.vscode/
+
+# ROOT (DOCKER E GERAL)
+*.log
+.env
+.env.local
+docker-compose.override.yml
+*.swp
+*.swo
+*.bak
+.DS_Store
+Thumbs.db

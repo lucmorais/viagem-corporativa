@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: laravel_app
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    networks:
+      - viagem_corporativa
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: vue_app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    networks:
+      - viagem_corporativa
+    command: sh -c "npm install && npm run dev -- --host"
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_DATABASE: onfly
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: onfly
+      MYSQL_PASSWORD: onfly_pass
+    ports:
+      - "3306:3306"
+    networks:
+      - viagem_corporativa
+
+networks:
+  viagem_corporativa:
+    driver: bridge
