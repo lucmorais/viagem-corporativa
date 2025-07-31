@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.backend
     container_name: laravel_app
     ports:
-      - "9000:9000"
+      - "8000:9000"
     depends_on:
       - db
     networks:
@@ -24,7 +24,6 @@ services:
       - "5173:5173"
     networks:
       - viagem_corporativa
-    command: sh -c "npm install && npm run dev -- --host"
 
   db:
     image: mysql:8.0
