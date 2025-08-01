@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
-import Dashboard from './pages/Dashboard.vue';
 </script>
 
 <template>
@@ -28,6 +27,7 @@ import Dashboard from './pages/Dashboard.vue';
               <div class="flex space-x-4">
                 <RouterLink to="/" aria-current="page" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Dashboard</RouterLink>
                 <RouterLink to="/pedido/cadastrar" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Cadastrar Pedido</RouterLink>
+                <RouterLink to="/pedido/consultar" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Consultar Pedido</RouterLink>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@ import Dashboard from './pages/Dashboard.vue';
     </nav>
   </header>
 
-  <main>
+  <main class="bg-gray-100 min-h-screen">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="flex justify-center">
           <RouterView />

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import ListaPedidos from '../components/ListaPedidos.vue';
+import FormularioPedido from '@/components/FormularioPedido.vue';
 </script>
 
 <template>
   <section class="rounded-lg overflow-hidden shadow-lg bg-white w-full mt-6">
     <div class="px-6 py-6">
-      <div class="font-bold text-xl text-left mb-6">Pedidos de viagem</div>
+      <div class="font-bold text-xl mb-6">Cadastrar pedido de viagem</div>
       <div>
-        <ListaPedidos />
+        <FormularioPedido />
       </div>
     </div>
   </section>
