@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
+import { Plus } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -26,7 +27,7 @@ import { RouterLink, RouterView } from 'vue-router';
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
                 <RouterLink to="/" aria-current="page" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Dashboard</RouterLink>
-                <RouterLink to="/pedido/cadastrar" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Cadastrar Pedido</RouterLink>
+                <RouterLink to="/pedido/cadastrar" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Plus class="inline"/> Pedido</RouterLink>
                 <RouterLink to="/pedido/consultar" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Consultar Pedido</RouterLink>
               </div>
             </div>
