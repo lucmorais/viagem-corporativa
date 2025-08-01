@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import Dashboard from '../components/dashboard/Dashboard.vue';
-// import Login from '../pages/Login.vue';
+import Dashboard from '../pages/Dashboard.vue';
+import Pedido from '../pages/Pedido.vue';
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: Dashboard },
-  // { path: '/login', component: Login }
+  { path: '/pedido/cadastrar', component: Pedido },
 ];
 
 const router = createRouter({

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ListaPedidos from './listapedidos/ListaPedidos.vue';
+import ListaPedidos from '../components/ListaPedidos.vue';
 </script>
 
 <template>
