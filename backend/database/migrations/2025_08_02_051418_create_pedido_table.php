@@ -16,10 +16,7 @@ return new class extends Migration
             ->id()
             ->autoIncrement();
 
-            $table
-            ->foreign('idUsuario')
-            ->references('id')
-            ->on('usuario');
+            $table->foreignId('idUsuario')->constrained('usuario');
 
             $table
             ->string('destino', 200)
