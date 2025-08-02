@@ -45,7 +45,8 @@ return new class extends Migration
             $table
             ->string('recuperar_token', 255)
             ->charset('utf8mb4')
-            ->collation('utf8mb4_unicode_ci');
+            ->collation('utf8mb4_unicode_ci')
+            ->nullable();
         });
     }
 
