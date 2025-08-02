@@ -33,6 +33,11 @@ return new class extends Migration
             ->collation('utf8mb4_unicode_ci');
 
             $table
+            ->string('usuario', 150)
+            ->charset('utf8mb4')
+            ->collation('utf8mb4_unicode_ci');
+
+            $table
             ->string('senha', 255)
             ->charset('utf8mb4')
             ->collation('utf8mb4_unicode_ci');
