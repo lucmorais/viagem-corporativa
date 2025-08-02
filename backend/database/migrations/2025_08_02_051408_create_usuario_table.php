@@ -17,6 +17,11 @@ return new class extends Migration
             ->autoIncrement();
 
             $table
+            ->foreignId('idPapel')
+            ->references('id')
+            ->on('papel');
+
+            $table
             ->string('nome', 150)
             ->charset('utf8mb4')
             ->collation('utf8mb4_unicode_ci');
@@ -33,9 +38,9 @@ return new class extends Migration
             ->collation('utf8mb4_unicode_ci');
 
             $table
-            ->foreignId('idPapel')
-            ->references('id')
-            ->on('papel');
+            ->string('recuperar_token', 255)
+            ->charset('utf8mb4')
+            ->collation('utf8mb4_unicode_ci');
         });
     }
 

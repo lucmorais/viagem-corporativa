@@ -16,7 +16,10 @@ return new class extends Migration
             ->id()
             ->autoIncrement();
 
-            $table->unsignedBigInteger('idUsuario');
+            $table
+            ->foreign('idUsuario')
+            ->references('id')
+            ->on('usuario');
 
             $table
             ->string('destino', 200)
@@ -36,11 +39,6 @@ return new class extends Migration
             $table
             ->timestamp('dataCriacao')
             ->useCurrent();
-
-            $table
-            ->foreign('idUsuario')
-            ->references('id')
-            ->on('usuario');
         });
     }
 

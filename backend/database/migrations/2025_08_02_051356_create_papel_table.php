@@ -17,7 +17,7 @@ return new class extends Migration
             ->autoIncrement();
 
             $table
-            ->string('nome', 100)
+            ->string('permissao', 100)
             ->charset('utf8mb4')
             ->collation('utf8mb4_unicode_ci');
         });
