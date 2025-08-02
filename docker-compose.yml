@@ -6,8 +6,12 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     container_name: laravel_app
+    volumes:
+      - ./backend:/var/www
     ports:
       - "8000:9000"
+    environment:
+      - DB_HOST=db
     depends_on:
       - db
     networks:
