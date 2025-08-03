@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { Menu as IconeMenu } from 'lucide-vue-next';
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { CircleX, Check } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 import {
