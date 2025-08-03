@@ -25,7 +25,8 @@ export class PedidoService {
     public async createPedido(pedido: Omit<PedidoI, 'id' | 'isUsuario' | 'status' | 'created_at' | 'updated_at'>) {
         try {
             const response = await api.post<PedidoI>('/pedido', pedido);
-            return response.data;
+            console.log('Pedido criado com sucesso:', response);
+            return response.status;
         } catch (err) {
             return undefined;
         }
@@ -33,7 +34,7 @@ export class PedidoService {
     public async updatePedido(id: number, pedido: Partial<Omit<PedidoI, 'id' | 'created_at' | 'updated_at'>>) {
         try {
             const response = await api.put<PedidoI>(`/pedido/${id}`, pedido);
-            return response.data;
+            return response.status
         } catch (err) {
             return undefined;
         }
