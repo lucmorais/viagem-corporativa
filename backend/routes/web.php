@@ -10,7 +10,6 @@ use App\Http\Middleware\JwtMiddleware;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/registro', [AuthController::class, 'register']);
-Route::get('/user', [AuthController::class, 'getUser']);
 
 Route::middleware([ApiMiddleware::class, JwtMiddleware::class])->group(function () {
     Route::get('/pedido', [PedidoController::class, 'index']);
@@ -24,4 +23,5 @@ Route::middleware([ApiMiddleware::class, JwtMiddleware::class])->group(function 
     Route::put('/usuario/{id}', [UsuarioController::class, 'update']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'getUser']);
 });
