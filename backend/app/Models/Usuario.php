@@ -24,7 +24,6 @@ class Usuario extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'id',
         'idPapel',
         'nome',
         'email',
@@ -42,14 +41,16 @@ class Usuario extends Authenticatable implements JWTSubject
         'recuperar_token',
     ];
 
-    public function getAuthIdentifier()
+    protected $primaryKey = 'id';
+
+    public function getPermissao()
     {
-        return $this->usuario;
+        return $this->belongsTo(Papel::class, 'idPapel');
     }
 
     public function getAuthIdentifierName()
     {
-        return 'usuario';
+        return 'id';
     }
 
     public function getAuthPasswordName()
@@ -69,6 +70,11 @@ class Usuario extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims(): array
     {
-        return [];
+        return [
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'email' => $this->email,
+            'permissao' => $this->getPermissao ? $this->getPermissao->permissao : ''
+        ];
     }
 }

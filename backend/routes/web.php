@@ -12,17 +12,18 @@ Route::middleware([ApiMiddleware::class, JwtMiddleware::class])->group(function 
     Route::post('/pedido', [PedidoController::class, 'store']);
     Route::put('/pedido/{id}', [PedidoController::class, 'update']);
 
-    Route::get('/usuario', [UsuarioController::class, 'index']);
     Route::get('/usuario/{id}', [UsuarioController::class, 'show']);
     Route::post('/usuario', [UsuarioController::class, 'store']);
     Route::put('/usuario/{id}', [UsuarioController::class, 'update']);
-
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'getUser']);
 });
 
 Route::middleware([JwtMiddleware::class])->group(function () {
     Route::get('/pedido', [PedidoController::class, 'index']);
+
+    Route::get('/usuario', [UsuarioController::class, 'index']);
+
+    Route::get('/user', [AuthController::class, 'getUser']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::middleware([ApiMiddleware::class])->group(function () {

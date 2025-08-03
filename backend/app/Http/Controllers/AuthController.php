@@ -45,7 +45,7 @@ class AuthController extends Controller
 
             $usuario = auth()->guard()->user();
 
-            $token = JWTAuth::claims(['role' => $usuario->role])->fromUser($usuario);
+            $token = JWTAuth::fromUser($usuario);
 
             return response()->json(compact('token'));
         } catch (JWTException $e) {
@@ -59,6 +59,8 @@ class AuthController extends Controller
             if (!$usuario = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['error' => 'Usuário não encontrado'], 404);
             }
+
+            return response()->json($usuario->getJWTCustomClaims(), 200);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Token inválido'], 400);
         }
