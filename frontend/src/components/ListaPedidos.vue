@@ -5,10 +5,26 @@ import { PedidoService } from '../services/PedidoService';
 import type PedidoI from '../interfaces/PedidoInterface';
 
 const pedidos = ref<PedidoI[] | undefined>([]);
-const pedidoService = new PedidoService();
+
+const emit = defineEmits<{
+    (e: 'status', tipo: string, msg: string): void;
+    (e: 'loading', status: boolean): void;
+}>();
 
 onMounted(async () => {
-    pedidos.value = await pedidoService.getPedidos();
+    emit('loading', true);
+
+    const pedidoService = new PedidoService();
+    await pedidoService.getPedidos().then((response) => {
+        if (response) {
+            pedidos.value = response;
+        } else {
+            pedidos.value = [];
+            emit('status', 'error', 'Erro ao carregar pedidos');
+        }
+    }).finally(() => {
+        emit('loading', false);
+    });
 });
 </script>
 
