@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CircleX, Check } from 'lucide-vue-next';
-import { computed, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import {
   TransitionRoot,
   TransitionChild,
@@ -12,7 +12,7 @@ import {
 const props = defineProps<{
   modelValue: boolean;
   mensagem: string;
-  tipo: 'erro' | 'sucesso';
+  tipo: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);

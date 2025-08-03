@@ -25,7 +25,6 @@ export class PedidoService {
     public async createPedido(pedido: Omit<PedidoI, 'id' | 'isUsuario' | 'status' | 'created_at' | 'updated_at'>) {
         try {
             const response = await api.post<PedidoI>('/pedido', pedido);
-            console.log('Pedido criado com sucesso:', response);
             return response.status;
         } catch (err) {
             return undefined;
