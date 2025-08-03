@@ -10,6 +10,11 @@ export class LoginService {
             const token = response.data.token;
             localStorage.setItem('token', token);
 
+            const responseUser = await api.get('/user');
+
+            const user = responseUser.data;
+            localStorage.setItem('usuario', JSON.stringify(user));
+
             return true;
         } catch (err) {
             return false;
