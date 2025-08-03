@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/', component: Dashboard },
   { path: '/login', component: Login },
   { path: '/pedido/cadastrar', component: CadastroPedido },
-  { path: '/pedido/consultar', component: ConsultaPedido },
+  { path: '/pedido/consultar/:id', component: ConsultaPedido, name: 'consulta-pedido' }
 ];
 
 const router = createRouter({
