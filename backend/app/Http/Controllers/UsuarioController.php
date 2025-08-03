@@ -10,13 +10,13 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = Usuario::all();
-        return response()->json($usuarios);
+        return response()->json($usuarios, 200);
     }
 
     public function show($id)
     {
         $usuario = Usuario::findOrFail($id);
-        return response()->json($usuario);
+        return response()->json($usuario, 200);
     }
 
     public function store(Request $request)
@@ -40,6 +40,6 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
 
         $usuario->update($request->all());
-        return response()->json($usuario);
+        return response()->json($usuario, 200);
     }
 }

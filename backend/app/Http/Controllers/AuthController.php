@@ -47,7 +47,7 @@ class AuthController extends Controller
 
             $token = JWTAuth::fromUser($usuario);
 
-            return response()->json(compact('token'));
+            return response()->json(compact('token'), 200);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Não foi possível criar o token'], 500);
         }
@@ -64,14 +64,12 @@ class AuthController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'Token inválido'], 400);
         }
-
-        return response()->json(compact('usuario'));
     }
 
     public function logout()
     {
         JWTAuth::invalidate(JWTAuth::getToken());
 
-        return response()->json(['message' => 'Logout realizado com sucesso']);
+        return response()->json(['message' => 'Logout realizado com sucesso'], 200);
     }
 }

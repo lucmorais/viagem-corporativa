@@ -10,13 +10,13 @@ class PedidoController extends Controller
     public function index()
     {
         $pedidos = Pedido::all();
-        return response()->json($pedidos);
+        return response()->json($pedidos, 200);
     }
 
     public function show($id)
     {
         $pedido = Pedido::findOrFail($id);
-        return response()->json($pedido);
+        return response()->json($pedido, 200);
     }
 
     public function store(Request $request)
@@ -39,6 +39,6 @@ class PedidoController extends Controller
         $pedido = Pedido::findOrFail($id);
 
         $pedido->update($request->all());
-        return response()->json($pedido);
+        return response()->json($pedido, 200);
     }
 }
