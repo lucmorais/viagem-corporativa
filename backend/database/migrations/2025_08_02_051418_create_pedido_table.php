@@ -33,9 +33,7 @@ return new class extends Migration
             ->charset('utf8mb4')
             ->collation('utf8mb4_unicode_ci');
 
-            $table
-            ->timestamp('dataCriacao')
-            ->useCurrent();
+            $table->timestamps();
         });
     }
 
