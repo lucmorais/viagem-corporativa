@@ -8,19 +8,19 @@ use App\Http\Middleware\ApiMiddleware;
 use App\Http\Middleware\JwtMiddleware;
 
 Route::middleware([ApiMiddleware::class, JwtMiddleware::class])->group(function () {
-    Route::get('/pedido/{id}', [PedidoController::class, 'show']);
     Route::post('/pedido', [PedidoController::class, 'store']);
     Route::put('/pedido/{id}', [PedidoController::class, 'update']);
 
-    Route::get('/usuario/{id}', [UsuarioController::class, 'show']);
     Route::post('/usuario', [UsuarioController::class, 'store']);
     Route::put('/usuario/{id}', [UsuarioController::class, 'update']);
 });
 
 Route::middleware([JwtMiddleware::class])->group(function () {
     Route::get('/pedido', [PedidoController::class, 'index']);
+    Route::get('/pedido/{id}', [PedidoController::class, 'show']);
 
     Route::get('/usuario', [UsuarioController::class, 'index']);
+    Route::get('/usuario/{id}', [UsuarioController::class, 'show']);
 
     Route::get('/user', [AuthController::class, 'getUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
