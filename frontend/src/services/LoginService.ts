@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import axios from 'axios';
+import api from './api';
 
 export class LoginService {
     private isLoading = ref(false);
@@ -10,7 +10,7 @@ export class LoginService {
         this.error.value = null;
 
         try {
-            const response = await axios.post('http://localhost:8000/login', { usuario, password: senha });
+            const response = await api.post('/login', { usuario, password: senha });
 
             const token = response.data.token;
             localStorage.setItem('token', token);

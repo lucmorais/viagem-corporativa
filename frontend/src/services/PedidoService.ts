@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import axios from 'axios';
+import api from './api';
 import type PedidoI from '../interfaces/PedidoInterface';
 
 export class PedidoService {
@@ -11,7 +11,7 @@ export class PedidoService {
         this.isLoading.value = true;
         this.error.value = null;
         try {
-            const response = await axios.get<PedidoI[]>('http://localhost:8000/pedido');
+            const response = await api.get<PedidoI[]>('/pedido');
             return response.data;
         } catch (err) {
             this.error.value = 'Falha ao buscar pedidos.';
@@ -24,7 +24,7 @@ export class PedidoService {
 
     public async getPedido(id: number): Promise<PedidoI | undefined> {
         try {
-            const response = await axios.get<PedidoI>(`http://localhost:8000/pedido/${id}`);
+            const response = await api.get<PedidoI>(`/pedido/${id}`);
             return response.data;
         } catch (error) {
             this.error.value = 'Falha ao buscar pedido.';
@@ -35,7 +35,7 @@ export class PedidoService {
         this.isLoading.value = true;
         this.error.value = null;
         try {
-            const response = await axios.post<PedidoI>('http://localhost:8000/pedido', pedido);
+            const response = await api.post<PedidoI>('/pedido', pedido);
             this.pedidos.value.push(response.data);
         } catch (err) {
             this.error.value = 'Falha ao adicionar pedido.';
@@ -47,7 +47,7 @@ export class PedidoService {
         this.isLoading.value = true;
         this.error.value = null;
         try {
-            const response = await axios.put<PedidoI>(`http://localhost:8000/pedido/${id}`, pedido);
+            const response = await api.put<PedidoI>(`/pedido/${id}`, pedido);
             const index = this.pedidos.value.findIndex(p => p.id === id);
             if (index !== -1) {
                 this.pedidos.value[index] = response.data;
