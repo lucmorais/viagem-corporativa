@@ -7,12 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Middleware\ApiMiddleware;
 use App\Http\Middleware\JwtMiddleware;
 
-
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/registro', [AuthController::class, 'register']);
-
 Route::middleware([ApiMiddleware::class, JwtMiddleware::class])->group(function () {
-    Route::get('/pedido', [PedidoController::class, 'index']);
     Route::get('/pedido/{id}', [PedidoController::class, 'show']);
     Route::post('/pedido', [PedidoController::class, 'store']);
     Route::put('/pedido/{id}', [PedidoController::class, 'update']);
@@ -24,4 +19,13 @@ Route::middleware([ApiMiddleware::class, JwtMiddleware::class])->group(function 
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'getUser']);
+});
+
+Route::middleware([JwtMiddleware::class])->group(function () {
+    Route::get('/pedido', [PedidoController::class, 'index']);
+});
+
+Route::middleware([ApiMiddleware::class])->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/registro', [AuthController::class, 'register']);
 });
