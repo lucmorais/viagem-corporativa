@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Usuario extends Model
+class Usuario extends Authenticatable implements JWTSubject
 {
+    use HasFactory, Notifiable;
+
     /**
      * The table associated with the model.
      *
@@ -24,6 +29,7 @@ class Usuario extends Model
         'nome',
         'email',
         'usuario',
+        'senha',
     ];
 
     /**
@@ -35,4 +41,34 @@ class Usuario extends Model
         'senha',
         'recuperar_token',
     ];
+
+    public function getAuthIdentifier()
+    {
+        return $this->usuario;
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return 'usuario';
+    }
+
+    public function getAuthPasswordName()
+    {
+        return 'senha';
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->senha;
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(): array
+    {
+        return [];
+    }
 }
