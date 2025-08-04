@@ -11,17 +11,12 @@ WORKDIR /var/www
 
 COPY ./backend /var/www
 
-RUN composer install --no-interaction --prefer-dist
-
-COPY ./backend/.env.example .env
-
-RUN php artisan key:generate
+COPY ./backend/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN chown -R www-data:www-data /var/www \
-    && chmod -R 775 storage bootstrap/cache
-
-RUN chmod +x entrypoint.sh
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 8000
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
