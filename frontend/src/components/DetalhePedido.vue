@@ -1,64 +1,70 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { PedidoService } from '@/services/PedidoService';
+import type PedidoI from '@/interfaces/PedidoInterface';
 
-interface Pedido {
-  id: number
-  destino: string
-  dataIda: string
-  dataVolta: string
-  solicitante: string
-  status: 'pendente' | 'aprovado' | 'cancelado'
-}
+const pedido = ref<PedidoI | null>(null);
 
-const pedido = ref<Pedido>({
-  id: 42,
-  destino: 'São Paulo',
-  dataIda: '2025-08-01',
-  dataVolta: '2025-08-05',
-  solicitante: 'Kowalski',
-  status: 'pendente'
-})
+const emit = defineEmits<{
+  (e: 'status', tipo: string, msg: string): void;
+  (e: 'loading', status: boolean): void;
+}>();
+
+const route = useRoute();
+const id = parseInt(route.params.id as string, 10);
+
+onMounted(async () => {
+  emit('loading', true);
+
+  const pedidoService = new PedidoService();
+  await pedidoService.getPedido(id).then((response) => {
+    if (response) {
+      pedido.value = response;
+    } else {
+      emit('status', 'erro', 'Erro ao carregar detalhes do pedido');
+    }
+  }).finally(() => {
+    emit('loading', false);
+  });
+});
 </script>
 
 <template>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div v-if="pedido" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div>
-        <label class="text-gray-600 font-medium">ID:</label>
-        <p class="text-gray-900">{{ pedido.id }}</p>
-      </div>
-
-      <div>
-        <label class="text-gray-600 font-medium">Destino:</label>
-        <p class="text-gray-900">{{ pedido.destino }}</p>
+        <label class="text-gray-600 font-medium">Destino: </label>
+        <p class="text-gray-900 inline">{{ pedido.destino }}</p>
       </div>
 
       <div>
-        <label class="text-gray-600 font-medium">Data de Ida:</label>
-        <p class="text-gray-900">{{ pedido.dataIda }}</p>
+        <label class="text-gray-600 font-medium">Data de Ida: </label>
+        <p class="text-gray-900 inline">{{ pedido.dataIda }}</p>
       </div>
 
       <div>
-        <label class="text-gray-600 font-medium">Data de Volta:</label>
-        <p class="text-gray-900">{{ pedido.dataVolta }}</p>
+        <label class="text-gray-600 font-medium">Data de Volta: </label>
+        <p class="text-gray-900 inline">{{ pedido.dataVolta }}</p>
       </div>
 
-      <div class="sm:col-span-2">
-        <label class="text-gray-600 font-medium">Solicitante:</label>
-        <p class="text-gray-900">{{ pedido.solicitante }}</p>
+      <div>
+        <label class="text-gray-600 font-medium">Solicitante: </label>
+        <p class="text-gray-900 inline">{{ pedido.solicitante }}</p>
       </div>
 
-      <div class="sm:col-span-2">
-        <label class="text-gray-600 font-medium">Status:</label>
+      <div>
+        <label class="text-gray-600 font-medium">Status: </label>
         <span
           class="inline-block mt-1 px-3 py-1 text-sm font-semibold rounded-full"
           :class="{
-            'bg-yellow-100 text-yellow-800': pedido.status === 'pendente',
+            'bg-yellow-100 text-yellow-800': pedido.status === 'solicitado',
             'bg-green-100 text-green-800': pedido.status === 'aprovado',
             'bg-red-100 text-red-800': pedido.status === 'cancelado',
           }"
         >
-          {{ pedido.status }}
+          {{ pedido.status.toLocaleUpperCase() }}
         </span>
       </div>
     </div>
+    <div v-else-if="pedido == null" class="text-center text-gray-500">Dados do pedido não encontrados.</div>
 </template>
