@@ -26,4 +26,9 @@ class Pedido extends Model
         'dataVolta',
         'status',
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'idUsuario');
+    }
 }

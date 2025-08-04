@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Papel;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 
@@ -9,7 +10,25 @@ class PedidoController extends Controller
 {
     public function index()
     {
-        $pedidos = Pedido::all();
+        $user = auth()->guard()->user();
+        $papel = Papel::find($user->idPapel);
+
+        $pedidos = Pedido::with('usuario:id,nome')
+        ->when($papel->permissao !== 'admin', function ($query) use ($user) {
+            $query->where('idUsuario', $user->id);
+        })
+        ->get()
+        ->map(function ($pedido) {
+            return [
+                'id' => $pedido->id,
+                'destino' => $pedido->destino,
+                'dataIda' => $pedido->dataIda,
+                'dataVolta' => $pedido->dataVolta,
+                'status' => $pedido->status,
+                'solicitante' => $pedido->usuario->nome,
+            ];
+        });
+
         return response()->json($pedidos, 200);
     }
 
