@@ -1,6 +1,9 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { LayoutDashboard, Plus, LogOut } from 'lucide-vue-next';
+import { LoginService } from '../services/LoginService';
+import Loading from './Loading.vue';
 
 const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
 const nomeUsuario = usuario?.nome || '';
@@ -10,12 +13,22 @@ const emit = defineEmits<{
   (e: 'loading', status: boolean): void;
 }>();
 
-const router = useRouter();
+const carregando = ref(false);
 
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('usuario');
-  router.push('/login');
+const router = useRouter();
+const loginService = new LoginService();
+
+async function logout() {
+  carregando.value = true;
+  await loginService.logout().then((response) => {
+    if (response === 200) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('usuario');
+      router.push('/login');
+    }
+  }).finally(() => {
+    carregando.value = false;
+  });
 }
 </script>
 
@@ -40,7 +53,7 @@ function logout() {
             </div>
           </div>
           <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <span class="bg-white text-gray-800 px-3 py-1 rounded-full text-sm font-medium shadow">
+            <span class="bg-white text-gray-800 px-3 py-1 rounded-full text-sm font-medium shadow mr-2">
               {{ nomeUsuario }}
             </span>
             <button
@@ -56,4 +69,5 @@ function logout() {
       </div>
     </nav>
   </header>
+  <Loading :ativo="carregando" />
 </template>

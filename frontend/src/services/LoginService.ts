@@ -20,4 +20,13 @@ export class LoginService {
             return false;
         }
     }
+
+    public async logout(): Promise<number | undefined> {
+        try {
+            const response = await api.post('/logout');
+            return response.status;
+        } catch (err) {
+            return undefined;
+        }
+    }
 }

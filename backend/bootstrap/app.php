@@ -16,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
         VerifyCsrfToken::except([
             'pedido',
             'pedido/*',
-            'login'
+            'login',
+            'logout',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
