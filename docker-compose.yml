@@ -38,6 +38,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: onfly
       MYSQL_PASSWORD: onfly_pass
+    volumes:
+      - dbdata:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
@@ -46,3 +48,6 @@ services:
 networks:
   viagem_corporativa:
     driver: bridge
+
+volumes:
+  dbdata:
