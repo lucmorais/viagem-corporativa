@@ -16,7 +16,7 @@ class ApiMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!$request->isJson()) {
-            return response()->json(['message' => 'Only JSON requests are accepted.'], 406);
+            return response()->json(['message' => 'Apenas requisições JSON são aceitas.'], 406);
         }
 
         return $next($request);
