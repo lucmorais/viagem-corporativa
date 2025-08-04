@@ -18,6 +18,7 @@
     "@headlessui/vue": "^1.7.23",
     "axios": "^1.11.0",
     "lucide-vue-next": "^0.536.0",
+    "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.18",
     "vue-axios": "^3.5.2",
     "vue-router": "^4.5.1"
