@@ -37,7 +37,7 @@ function logout() {
             <div class="hidden sm:block">
               <div class="flex space-x-4">
                 <RouterLink to="/" v-slot="{ isActive }">
-                  <span :class="['px-3 py-2 text-sm font-medium rounded-md', isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white']">
+                  <span :class="['pr-3 py-2 text-sm font-medium rounded-md', isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white']">
                     <LayoutDashboard class="inline" /> Dashboard
                   </span>
                 </RouterLink>
