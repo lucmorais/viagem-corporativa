@@ -18,6 +18,7 @@ Route::middleware([ApiMiddleware::class, JwtMiddleware::class])->group(function 
 Route::middleware([JwtMiddleware::class])->group(function () {
     Route::get('/pedido', [PedidoController::class, 'index']);
     Route::get('/pedido/{id}', [PedidoController::class, 'show']);
+    Route::post('/pedido/filtrar', [PedidoController::class, 'filtrarPedidos']);
 
     Route::get('/usuario', [UsuarioController::class, 'index']);
     Route::get('/usuario/{id}', [UsuarioController::class, 'show']);

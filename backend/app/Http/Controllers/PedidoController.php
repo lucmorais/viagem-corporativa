@@ -22,8 +22,8 @@ class PedidoController extends Controller
             return [
                 'id' => $pedido->id,
                 'destino' => $pedido->destino,
-                'dataIda' => $pedido->dataIda,
-                'dataVolta' => $pedido->dataVolta,
+                'dataIda' => date('d/m/Y', strtotime($pedido->dataIda)),
+                'dataVolta' => date('d/m/Y', strtotime($pedido->dataVolta)),
                 'status' => $pedido->status,
                 'solicitante' => $pedido->usuario->nome,
             ];
@@ -34,7 +34,12 @@ class PedidoController extends Controller
 
     public function show($id)
     {
-        $pedido = Pedido::findOrFail($id);
+        $pedido = Pedido::with('usuario:id,nome')->findOrFail($id);
+        $pedido->dataIda = date('d/m/Y', strtotime($pedido->dataIda));
+        $pedido->dataVolta = date('d/m/Y', strtotime($pedido->dataVolta));
+        $pedido->solicitante = $pedido->usuario->nome ?? 'N/A';
+        unset($pedido->usuario);
+
         return response()->json($pedido, 200);
     }
 
@@ -59,5 +64,46 @@ class PedidoController extends Controller
 
         $pedido->update($request->all());
         return response()->json($pedido, 200);
+    }
+
+    public function filtrarPedidos(Request $request)
+    {
+        $user = auth()->guard()->user();
+        $papel = Papel::find($user->idPapel);
+
+        $pedidos = Pedido::with('usuario:id,nome')
+        ->when($papel->permissao !== 'admin', function ($query) use ($user) {
+            $query->where('idUsuario', $user->id);
+        })
+        ->when($request->filled('solicitante'), function ($query) use ($request) {
+            $query->whereHas('usuario', function ($subQuery) use ($request) {
+                $subQuery->where('nome', 'like', '%' . $request->solicitante . '%');
+            });
+        })
+        ->when($request->filled('destino'), function ($query) use ($request) {
+            $query->where('destino', 'like', '%' . $request->destino . '%');
+        })
+        ->when($request->filled('dataIda'), function ($query) use ($request) {
+            $query->whereDate('dataIda', $request->dataIda);
+        })
+        ->when($request->filled('dataVolta'), function ($query) use ($request) {
+            $query->whereDate('dataVolta', $request->dataVolta);
+        })
+        ->when($request->filled('status'), function ($query) use ($request) {
+            $query->where('status', $request->status);
+        })
+        ->get()
+        ->map(function ($pedido) {
+            return [
+                'id' => $pedido->id,
+                'destino' => $pedido->destino,
+                'dataIda' => date('d/m/Y', strtotime($pedido->dataIda)),
+                'dataVolta' => date('d/m/Y', strtotime($pedido->dataVolta)),
+                'status' => $pedido->status,
+                'solicitante' => $pedido->usuario->nome ?? 'N/A',
+            ];
+        });
+
+        return response()->json($pedidos, 200);
     }
 }

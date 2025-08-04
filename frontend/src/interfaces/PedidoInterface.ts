@@ -1,6 +1,6 @@
 export default interface PedidoI {
     id: number;
-    idUsuario: number;
+    solicitante: number | string;
     destino: string;
     dataIda: string;
     dataVolta: string;

@@ -22,7 +22,7 @@ export class PedidoService {
         }
     }
 
-    public async createPedido(pedido: Omit<PedidoI, 'id' | 'isUsuario' | 'status' | 'created_at' | 'updated_at'>) {
+    public async createPedido(pedido: Omit<PedidoI, 'id' | 'solicitante' | 'status' | 'created_at' | 'updated_at'>) {
         try {
             const response = await api.post<PedidoI>('/pedido', pedido);
             return response.status;
@@ -30,10 +30,32 @@ export class PedidoService {
             return undefined;
         }
     }
+
     public async updatePedido(id: number, pedido: Partial<Omit<PedidoI, 'id' | 'created_at' | 'updated_at'>>) {
         try {
             const response = await api.put<PedidoI>(`/pedido/${id}`, pedido);
             return response.status
+        } catch (err) {
+            return undefined;
+        }
+    }
+
+    public async filtrarPedidos(
+        solicitante: string,
+        destino: string,
+        dataIda: string,
+        dataVolta: string,
+        status: string
+    ): Promise<PedidoI[] | undefined> {
+        try {
+            const response = await api.post<PedidoI[]>('/pedido/filtrar', {
+                solicitante,
+                destino,
+                dataIda,
+                dataVolta,
+                status
+            });
+            return response.data;
         } catch (err) {
             return undefined;
         }
