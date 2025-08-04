@@ -34,7 +34,7 @@ export class PedidoService {
     public async updatePedido(id: number, pedido: Partial<Omit<PedidoI, 'id' | 'created_at' | 'updated_at'>>) {
         try {
             const response = await api.put<PedidoI>(`/pedido/${id}`, pedido);
-            return response.status
+            return response.status;
         } catch (err) {
             return undefined;
         }

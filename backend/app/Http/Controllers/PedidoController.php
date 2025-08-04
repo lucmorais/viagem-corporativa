@@ -10,12 +10,9 @@ class PedidoController extends Controller
 {
     public function index()
     {
-        $user = auth()->guard()->user();
-        $papel = Papel::find($user->idPapel);
-
         $pedidos = Pedido::with('usuario:id,nome')
-        ->when($papel->permissao !== 'admin', function ($query) use ($user) {
-            $query->where('idUsuario', $user->id);
+        ->when(!is_null($this->validarPermissao()), function ($query) {
+            $query->where('idUsuario', $this->validarPermissao());
         })
         ->get()
         ->map(function ($pedido) {
@@ -60,7 +57,15 @@ class PedidoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $data = $request->validate([
+            'status' => 'required|in:aprovado,cancelado',
+        ]);
+
         $pedido = Pedido::findOrFail($id);
+
+        if ($data && ($pedido->status !== 'solicitado' || !is_null($this->validarPermissao()))) {
+            return response()->json(['error' => 'Pedido não pode ser atualizado'], 400);
+        }
 
         $pedido->update($request->all());
         return response()->json($pedido, 200);
@@ -72,8 +77,8 @@ class PedidoController extends Controller
         $papel = Papel::find($user->idPapel);
 
         $pedidos = Pedido::with('usuario:id,nome')
-        ->when($papel->permissao !== 'admin', function ($query) use ($user) {
-            $query->where('idUsuario', $user->id);
+        ->when(!is_null($this->validarPermissao()), function ($query) {
+            $query->where('idUsuario', $this->validarPermissao());
         })
         ->when($request->filled('solicitante'), function ($query) use ($request) {
             $query->whereHas('usuario', function ($subQuery) use ($request) {
@@ -105,5 +110,13 @@ class PedidoController extends Controller
         });
 
         return response()->json($pedidos, 200);
+    }
+
+    private function validarPermissao()
+    {
+        $user = auth()->guard()->user();
+        $papel = Papel::find($user->idPapel);
+
+        return $papel->permissao !== 'admin' ? $user->id : null;
     }
 }

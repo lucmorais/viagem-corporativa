@@ -9,6 +9,11 @@ import {
   DialogTitle,
 } from '@headlessui/vue';
 
+const emit = defineEmits<{
+  (e: 'aprovar', id: number): void;
+  (e: 'cancelar', id: number): void;
+}>();
+
 const props = defineProps<{
   id: number,
   acao: 'aprovar' | 'cancelar'
@@ -49,6 +54,16 @@ function closeModal() {
 
 function openModal() {
   isOpen.value = true
+}
+
+function handleAprovar() {
+  emit('aprovar', props.id);
+  closeModal();
+}
+
+function handleCancelar() {
+  emit('cancelar', props.id);
+  closeModal();
 }
 </script>
 
@@ -101,7 +116,7 @@ function openModal() {
                 >
                     {{ tituloModal }}
                 </DialogTitle>
-                <div class="mt-2">
+                <div class="my-6">
                     <p class="text-sm text-gray-500">
                         {{ descricaoModal }}
                     </p>
@@ -111,7 +126,7 @@ function openModal() {
                     <button
                         type="button"
                         class="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-green-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-                        @click=""
+                        @click="acao === 'aprovar' ? handleAprovar() : handleCancelar()"
                     >
                         Sim
                     </button>

@@ -44,8 +44,11 @@ watch([filtroSolicitante, filtroDestino, filtroDataIda, filtroDataVolta, filtroS
 });
 
 onMounted(async () => {
-    emit('loading', true);
+    carregarPedidos();
+});
 
+async function carregarPedidos() {
+    emit('loading', true);
     await pedidoService.getPedidos().then((response) => {
         if (response) {
             pedidos.value = response;
@@ -56,7 +59,39 @@ onMounted(async () => {
     }).finally(() => {
         emit('loading', false);
     });
-});
+}
+
+async function aprovarPedido(id: number) {
+    emit('loading', true);
+    await pedidoService.updatePedido(id, { status: 'aprovado' }).then(async (response) => {
+        if (response == 200) {
+            emit('status', 'sucesso', 'Pedido aprovado com sucesso');
+            await carregarPedidos();
+        } else if (response == 400) {
+            emit('status', 'erro', 'Pedido não pode ser aprovado');
+        } else {
+            emit('status', 'erro', 'Erro ao aprovar pedido');
+        }
+    }).finally(() => {
+        emit('loading', false);
+    });
+}
+
+async function cancelarPedido(id: number) {
+    emit('loading', true);
+    await pedidoService.updatePedido(id, { status: 'cancelado' }).then(async (response) => {
+        if (response == 200) {
+            emit('status', 'sucesso', 'Pedido cancelado com sucesso');
+            await carregarPedidos();
+        } else if (response == 400) {
+            emit('status', 'erro', 'Pedido não pode ser cancelado');
+        } else {
+            emit('status', 'erro', 'Erro ao cancelar pedido');
+        }
+    }).finally(() => {
+        emit('loading', false);
+    });
+}
 </script>
 
 <template>
@@ -131,8 +166,16 @@ onMounted(async () => {
                         >{{ pedido.status.toLocaleUpperCase() }}</span>
                     </td>
                     <td class="border px-4 py-2 text-center flex justify-center space-x-2">
-                        <Acao v-if="permissao === 'admin'" :id="pedido.id" :acao="'aprovar'" />
-                        <Acao v-if="permissao === 'admin'" :id="pedido.id" :acao="'cancelar'" />
+                        <Acao
+                            v-if="permissao === 'admin' && pedido.status === 'solicitado'"
+                            :id="pedido.id" :acao="'aprovar'"
+                            @aprovar="aprovarPedido"
+                        />
+                        <Acao
+                            v-if="permissao === 'admin' && pedido.status === 'solicitado'" :id="pedido.id"
+                            :acao="'cancelar'"
+                            @cancelar="cancelarPedido"
+                        />
                         <RouterLink :to="{ name: 'consulta-pedido', params: { id: pedido.id } }" class="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"><ZoomIn /></RouterLink>
                     </td>
                 </tr>
