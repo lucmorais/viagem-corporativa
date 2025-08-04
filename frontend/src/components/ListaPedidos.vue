@@ -61,14 +61,6 @@ onMounted(async () => {
 
 <template>
     <div class="overflow-x-auto">
-        <!-- <div class="mb-4">
-            <input
-                v-model="filtro"
-                type="text"
-                placeholder="Filtrar por solicitante ou data de ida/volta ou destino"
-                class="border rounded px-4 py-2 w-full max-w-sm"
-            />
-        </div> -->
         <table class="table-auto w-full text-sm">
             <thead>
                 <tr>
