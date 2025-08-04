@@ -68,7 +68,12 @@ O projeto segue a arquitetura:
    docker-compose up -d --build
    ```
 
-3. O sistema estará disponível nos seguintes endereços:
+3. Verifique se o entrypoint finalizou a execução do composer intall e se o container do MySQL está pronto para começar a utilizar a aplicação:
+   ```bash
+   docker logs -f laravel_app
+   ```
+
+4. O sistema estará disponível nos seguintes endereços:
    - **Frontend**: http://localhost:5173
    - **Backend API**: http://localhost:8000
 
